@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>IgãoSports - Futebol ao vivo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>IGÃO SPORTS</h1>
+  <p>Placar ao vivo, próximos jogos e classificação ⚽🔥</p>
+</header>
+
+<main>
+
+<section class="box">
+  <h2>Placar ao vivo</h2>
+  <div id="aoVivo" class="lista"></div>
+</section>
+
+<section class="box">
+  <h2>Próximos jogos</h2>
+  <div id="proximos" class="lista"></div>
+</section>
+
+<section class="box">
+  <h2>Tabela do Campeonato</h2>
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Time</th>
+        <th>Pontos</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<button onclick="atualizar()">Atualizar Dados</button>
+
+</main> 
+<div class="menu">
+  <button id="aoVivoBtn">Placar ao Vivo</button>
+  <button id="proximosBtn">Próximos Jogos</button>
+</div>
+
+<section class="box">
+  <h2>Resultados</h2>
+  <div id="conteudo" class="lista"></div>
+</section>
+
+<div id="lista-jogos"></div>
+<script src="app.js"></script>
+</body>
+</html>
+
+
