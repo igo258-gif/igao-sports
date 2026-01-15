@@ -48,7 +48,24 @@
 </div>
 
 <section class="box">
-  <h2>Resultados</h2>
+ <div id="resultados" style="min-height: 400px; padding: 20px;">
+    <h2 style="color: white; text-align: center;">Placar ao Vivo</h2>
+    
+    <div id="wg-api-football-games"
+         data-host="v3.football.api-sports.io"
+         data-key="81ad2ebcc9b0458ba08a0bb03bb550f5"
+         data-date="2026-01-15"
+         data-theme="dark"
+         data-refresh="60"
+         data-show-toolbar="true"
+         data-show-logos="true"
+         class="api_football_loader">
+    </div>
+    <script
+        type="module"
+        src="https://widgets.api-sports.io/2.0.3/widgets.js">
+    </script>
+</div>
   <div id="conteudo" class="lista"></div>
 </section>
 
@@ -56,5 +73,6 @@
 <script src="app.js"></script>
 </body>
 </html>
+
 
 
