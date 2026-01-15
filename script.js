@@ -1,27 +1,43 @@
 async function atualizar() {
-    console.log("Botão clicado!"); // Aparece no F12
-    const display = document.getElementById("lista-jogos");
-    
-    if (display) {
-        display.innerHTML = "<h3>Buscando dados no servidor...</h3>";
-    }
+    const container = document.getElementById('jogos-container');
+    container.innerHTML = '<p>Buscando jogos reais...</p>';
+
+    // COLOQUE SUA CHAVE AQUI QUANDO SAIR DA ANÁLISE:
+    const minhaChave = "SUA_CHAVE_AQUI"; 
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': minhaChave,
+            'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+        }
+    };
 
     try {
-        // Busca a rota que criamos no seu server.js
-        const resposta = await fetch('http://localhost:3000/jogos');
-        const dados = await resposta.json();
+        // Busca jogos de hoje (Estaduais e outros)
+        const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all', options);
+        const data = await response.json();
 
-        if (display) {
-            // Se o servidor retornar erro da API externa
-            if (dados.erro) {
-                display.innerHTML = <p style="color: red;">Erro: ${dados.erro}</p>;
-            } else {
-                // Mostra os dados na tela
-                display.innerHTML = <pre style="background: #222; color: #0f0; padding: 10px;">${JSON.stringify(dados, null, 2)}</pre>;
-            }
+        if (data.response && data.response.length > 0) {
+            container.innerHTML = '';
+            data.response.forEach(jogo => {
+                const placar = document.createElement('div');
+                placar.className = 'jogo-item';
+                placar.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333;">
+                        <span><img src="${jogo.teams.home.logo}" width="20"> ${jogo.teams.home.name}</span>
+                        <strong>${jogo.goals.home} x ${jogo.goals.away}</strong>
+                        <span>${jogo.teams.away.name} <img src="${jogo.teams.away.logo}" width="20"></span>
+                    </div>
+                    <small style="color: #00ff00;">${jogo.fixture.status.elapsed}' - ${jogo.league.name}</small>
+                `;
+                container.appendChild(placar);
+            });
+        } else {
+            container.innerHTML = '<p>Nenhum jogo ao vivo no momento. Verifique mais tarde!</p>';
         }
-    } catch (erro) {
-        console.error("Erro ao clicar:", erro);
-        alert("O servidor parou! Verifique o terminal.");
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = '<p>Erro ao carregar dados. Verifique sua chave da API.</p>';
     }
 }
