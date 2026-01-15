@@ -1,9 +1,13 @@
 async function atualizar() {
     const container = document.getElementById('jogos-container');
-    container.innerHTML = '<p>Buscando jogos reais...</p>';
+    // Se o seu HTML não tiver o ID 'jogos-container', ele tentará no corpo do site
+    const alvo = container || document.body;
+    
+    alvo.innerHTML = '<p style="color: white;">Buscando jogos da rodada...</p>';
 
     const minhaChave = "81ad2ebcc9b0458ba08a0bb03bb550f5"; 
 
+    // Esta API exige o cabeçalho 'X-Auth-Token'
     const options = {
         method: 'GET',
         headers: {
@@ -12,33 +16,34 @@ async function atualizar() {
     };
 
     try {
-        // Busca jogos dos principais campeonatos do mundo
-        const response = await fetch('https://api.football-data.org/v2/matches', options);
+        // Busca partidas agendadas e em andamento
+        const response = await fetch('https://api.football-data.org/v4/matches', options);
         const data = await response.json();
 
         if (data.matches && data.matches.length > 0) {
-            container.innerHTML = '';
-            data.matches.forEach(jogo => {
+            alvo.innerHTML = '';
+            data.matches.slice(0, 10).forEach(jogo => {
                 const placar = document.createElement('div');
-                placar.className = 'jogo-item';
+                placar.style.cssText = "background: #1a1a1a; margin: 10px; padding: 15px; border-radius: 8px; border-left: 5px solid #007bff; color: white;";
                 placar.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333;">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
                         <span>${jogo.homeTeam.name}</span>
-                        <strong>${jogo.score.fullTime.homeTeam ?? 0} x ${jogo.score.fullTime.awayTeam ?? 0}</strong>
+                        <span>${jogo.score.fullTime.home ?? 0} x ${jogo.score.fullTime.away ?? 0}</span>
                         <span>${jogo.awayTeam.name}</span>
                     </div>
-                    <small style="color: #00ff00;">${jogo.status} - ${jogo.competition.name}</small>
+                    <div style="font-size: 12px; color: #aaa; margin-top: 5px;">
+                        ${jogo.competition.name} - Status: ${jogo.status}
+                    </div>
                 `;
-                container.appendChild(placar);
+                alvo.appendChild(placar);
             });
         } else {
-            container.innerHTML = '<p>Nenhum jogo encontrado para hoje nesta API.</p>';
+            alvo.innerHTML = '<p style="color: white;">Nenhum jogo encontrado para hoje nesta liga.</p>';
         }
     } catch (error) {
         console.error(error);
-        container.innerHTML = '<p>Erro ao carregar dados. Verifique sua chave.</p>';
+        alvo.innerHTML = '<p style="color: red;">Erro ao carregar dados. Verifique a conexão.</p>';
     }
 }
+          
 
-    
-      
