@@ -1,13 +1,13 @@
 async function atualizar() {
-    const container = document.getElementById('jogos-container');
-    // Se o seu HTML não tiver o ID 'jogos-container', ele tentará no corpo do site
-    const alvo = container || document.body;
-    
-    alvo.innerHTML = '<p style="color: white;">Buscando jogos da rodada...</p>';
+    const container = document.getElementById('jogos-container') || document.body;
+    container.innerHTML = '<p style="color: white;">Buscando jogos reais (usando ponte)...</p>';
 
     const minhaChave = "81ad2ebcc9b0458ba08a0bb03bb550f5"; 
+    
+    // Usamos um proxy para evitar o erro de CORS que está bloqueando seu site
+    const proxy = "https://cors-anywhere.herokuapp.com/";
+    const url = "https://api.football-data.org/v4/matches";
 
-    // Esta API exige o cabeçalho 'X-Auth-Token'
     const options = {
         method: 'GET',
         headers: {
@@ -16,34 +16,40 @@ async function atualizar() {
     };
 
     try {
-        // Busca partidas agendadas e em andamento
-        const response = await fetch('https://api.football-data.org/v4/matches', options);
+        const response = await fetch(proxy + url, options);
+        
+        if (response.status === 403) {
+            container.innerHTML = '<p style="color: yellow;">Acesse "cors-anywhere.herokuapp.com/corsdemo" e clique no botão azul para liberar o acesso temporário.</p>';
+            return;
+        }
+
         const data = await response.json();
 
         if (data.matches && data.matches.length > 0) {
-            alvo.innerHTML = '';
+            container.innerHTML = '';
             data.matches.slice(0, 10).forEach(jogo => {
                 const placar = document.createElement('div');
-                placar.style.cssText = "background: #1a1a1a; margin: 10px; padding: 15px; border-radius: 8px; border-left: 5px solid #007bff; color: white;";
+                placar.style.cssText = "background: #1a1a1a; margin: 10px; padding: 15px; border-radius: 8px; border-left: 5px solid #007bff; color: white; font-family: sans-serif;";
                 placar.innerHTML = `
                     <div style="display: flex; justify-content: space-between; font-weight: bold;">
-                        <span>${jogo.homeTeam.name}</span>
+                        <span>${jogo.homeTeam.shortName || jogo.homeTeam.name}</span>
                         <span>${jogo.score.fullTime.home ?? 0} x ${jogo.score.fullTime.away ?? 0}</span>
-                        <span>${jogo.awayTeam.name}</span>
+                        <span>${jogo.awayTeam.shortName || jogo.awayTeam.name}</span>
                     </div>
-                    <div style="font-size: 12px; color: #aaa; margin-top: 5px;">
-                        ${jogo.competition.name} - Status: ${jogo.status}
+                    <div style="font-size: 11px; color: #00ff00; margin-top: 5px;">
+                        ${jogo.competition.name} - ${jogo.status}
                     </div>
                 `;
-                alvo.appendChild(placar);
+                container.appendChild(placar);
             });
         } else {
-            alvo.innerHTML = '<p style="color: white;">Nenhum jogo encontrado para hoje nesta liga.</p>';
+            container.innerHTML = '<p style="color: white;">Nenhum jogo importante hoje nesta lista.</p>';
         }
     } catch (error) {
         console.error(error);
-        alvo.innerHTML = '<p style="color: red;">Erro ao carregar dados. Verifique a conexão.</p>';
+        container.innerHTML = '<p style="color: red;">Erro de conexão. Tente novamente em instantes.</p>';
     }
 }
-          
+            
+
 
