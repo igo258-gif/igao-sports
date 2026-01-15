@@ -1,78 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>IgãoSports - Futebol ao vivo</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igão Sports - Resultados</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<body style="background-color: #0d1117; color: white; font-family: sans-serif;">
 
-<body>
+    <header style="text-align: center; padding: 20px; background: #161b22;">
+        <h1>Igão Sports ⚽</h1>
+        <p>Acompanhe os principais jogos do dia</p>
+    </header>
 
-<header>
-  <h1>IGÃO SPORTS</h1>
-  <p>Placar ao vivo, próximos jogos e classificação ⚽🔥</p>
-</header>
+    <main>
+        <section id="placar-area" style="max-width: 600px; margin: 20px auto; padding: 10px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button onclick="atualizar()" style="padding: 10px 20px; background: #238636; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                    🔄 Atualizar Placares Agora
+                </button>
+            </div>
 
-<main>
+            <div id="jogos-container">
+                <p style="text-align: center; color: #8b949e;">Clique no botão para carregar as notícias de futebol.</p>
+            </div>
+        </section>
+    </main>
 
-<section class="box">
-  <h2>Placar ao vivo</h2>
-  <div id="aoVivo" class="lista"></div>
-</section>
-
-<section class="box">
-  <h2>Próximos jogos</h2>
-  <div id="proximos" class="lista"></div>
-</section>
-
-<section class="box">
-  <h2>Tabela do Campeonato</h2>
-  <table id="tabela">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Time</th>
-        <th>Pontos</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</section>
-
-<button onclick="atualizar()">Atualizar Dados</button>
-
-</main> 
-<div class="menu">
-  <button id="aoVivoBtn">Placar ao Vivo</button>
-  <button id="proximosBtn">Próximos Jogos</button>
-</div>
-
-<section class="box">
- <div id="resultados" style="min-height: 400px; padding: 20px;">
-    <h2 style="color: white; text-align: center;">Placar ao Vivo</h2>
-    
-    <div id="wg-api-football-games"
-         data-host="v3.football.api-sports.io"
-         data-key="81ad2ebcc9b0458ba08a0bb03bb550f5"
-         data-date="2026-01-15"
-         data-theme="dark"
-         data-refresh="60"
-         data-show-toolbar="true"
-         data-show-logos="true"
-         class="api_football_loader">
-    </div>
-    <script
-        type="module"
-        src="https://widgets.api-sports.io/2.0.3/widgets.js">
-    </script>
-</div>
-  <div id="conteudo" class="lista"></div>
-</section>
-
-<div id="lista-jogos"></div>
-<script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
 
 
 
