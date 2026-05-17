@@ -1,4 +1,4 @@
-ync function atualizar() {
+async function atualizar() {
     console.log("Botão clicado!"); // Aparece no F12
     const display = document.getElementById("lista-jogos");
     
@@ -23,4 +23,5 @@ ync function atualizar() {
     } catch (erro) {
         console.error("Erro ao clicar:", erro);
         alert("O servidor parou! Verifique o terminal.");
-    }
+    } 
+}
